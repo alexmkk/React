@@ -20,11 +20,10 @@ export default class App extends Component {
             filter: 'all'
         }
         this.addItem = this.addItem.bind(this);
-        this.onToggleImportant = this.onToggleImportant.bind(this);
-        this.onToggleLike = this.onToggleLike.bind(this);
         this.deleteItem = this.deleteItem.bind(this);
         this.onUpdateSearch = this.onUpdateSearch.bind(this);
         this.onFilterSelect = this.onFilterSelect.bind(this);
+        this.onToggleTemplate = this.onToggleTemplate.bind(this);
 
         this.maxId = 4;
     }
@@ -43,27 +42,12 @@ export default class App extends Component {
         })
     }
 
-    onToggleImportant(id) {
+    onToggleTemplate(id, field) {
         this.setState(({ data }) => {
             const index = data.findIndex(elem => elem.id === id);
 
             const old = data[index];
-            const newItem = { ...old, important: !old.important }
-
-            const newArray = [...data.slice(0, index), newItem, ...data.slice(index + 1)];
-
-            return {
-                data: newArray
-            };
-        });
-    }
-
-    onToggleLike(id) {
-        this.setState(({ data }) => {
-            const index = data.findIndex(elem => elem.id === id);
-
-            const old = data[index];
-            const newItem = { ...old, like: !old.like }
+            const newItem = { ...old, [field]: !old[field] }
 
             const newArray = [...data.slice(0, index), newItem, ...data.slice(index + 1)];
 
@@ -132,6 +116,7 @@ export default class App extends Component {
                     onDelete={this.deleteItem}
                     onToggleImportant={this.onToggleImportant}
                     onToggleLike={this.onToggleLike}
+                    onToggleTemplate={this.onToggleTemplate}
                 />
                 <PostAddForm
                     onAdd={this.addItem}
